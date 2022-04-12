@@ -57,7 +57,7 @@ public class LoginHandlerImp implements LoginHandler {
                     }));
         })
         .switchIfEmpty(Mono.defer(() -> {
-            log.info("Authentication request is not found.");
+            log.info("Authentication request can't be found.");
             return ServerResponse.status(HttpStatus.BAD_REQUEST).build();
         }));
     }

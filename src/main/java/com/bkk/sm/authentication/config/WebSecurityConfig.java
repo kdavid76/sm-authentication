@@ -6,17 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
-import org.springframework.web.server.WebFilter;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -48,10 +43,10 @@ public class WebSecurityConfig {
                     .and()
                 .authenticationManager(authenticationManager)
                 .securityContextRepository(securityContextRepository)
-                //.addFilterAt(new SampleFilter1(authenticationManager), SecurityWebFiltersOrder.AUTHENTICATION)
-                //.addFilterAt(new SampleFilter2(authenticationManager), SecurityWebFiltersOrder.AUTHENTICATION)
                 .authorizeExchange()
                     .pathMatchers(HttpMethod.POST, "/login")
+                        .permitAll()
+                    .pathMatchers(HttpMethod.POST, "/register/**")
                         .permitAll()
                     .pathMatchers( "/favicon.ico")
                         .permitAll()
@@ -96,25 +91,5 @@ public class WebSecurityConfig {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public String getFilters(SecurityWebFilterChain filterChainProxy) {
-        Flux<WebFilter> list = filterChainProxy.getWebFilters();
-        list.toStream()
-                .forEach(filter -> log.info(filter.getClass().getName()));
-        return "SimpleBean";
-    }
-
-    public static class SampleFilter1 extends AuthenticationWebFilter {
-        public SampleFilter1(ReactiveAuthenticationManager authenticationManager) {
-            super(authenticationManager);
-        }
-    }
-
-    public static class SampleFilter2 extends AuthenticationWebFilter {
-        public SampleFilter2(ReactiveAuthenticationManager authenticationManager) {
-            super(authenticationManager);
-        }
     }
 }

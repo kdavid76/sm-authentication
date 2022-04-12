@@ -1,33 +1,51 @@
 package com.bkk.sm.authentication.services.mongo.impl;
 
-import com.bkk.sm.authentication.services.mongo.UserDetailsService;
+import com.bkk.sm.authentication.model.CompanyRole;
 import com.bkk.sm.authentication.model.Role;
 import com.bkk.sm.authentication.model.User;
+import com.bkk.sm.authentication.model.UserResource;
+import com.bkk.sm.authentication.repository.ReactiveUserRepository;
+import com.bkk.sm.authentication.services.mongo.UserDetailsService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
+@Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final Map<String, User> userMap;
+    private final ReactiveUserRepository repository;
 
-    public UserDetailsServiceImpl() {
-        userMap = new HashMap<>();
-
-        User u1 = new User("admin", "$2a$10$Ryz84DvVZkr2ewqMV/B7BeDr4cf4rpOYP2I1jwXCRVUb4ayZcuIXy", true, List.of(Role.ROLE_USER, Role.ROLE_ADMIN));
-        User u2 = new User("user", "$2a$10$6pVt01bVgbBXl/LblaEaxObtknqnLsfi7bKAcnCI/ZOtIswNnEAC6", true, List.of(Role.ROLE_ADMIN));
-
-        userMap.put(u1.getUsername(), u1);
-        userMap.put(u2.getUsername(), u2);
+    @Autowired
+    UserDetailsServiceImpl(ReactiveUserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        return Mono.justOrEmpty(userMap.get(username));
+       return repository.findByUsername(username).map(UserDetails.class::cast)
+               .onErrorResume(Objects::nonNull, exception -> {
+                   if( exception instanceof UsernameNotFoundException) {
+                       log.info(exception.getMessage(), exception);
+                       return Mono.error(exception);
+                   }
+                   log.error("Unexpected problem occurred while taking to authentication datastore", exception);
+                   return Mono.error(
+                           new AuthenticationServiceException(
+                                   "Unexpected problem occurred while taking to authentication datastore",
+                                   exception
+                           )
+                   );
+               })
+               .switchIfEmpty(Mono.defer(() -> Mono.error(new UsernameNotFoundException(
+                       String.format("User with username=%s cannot be found.", username)
+               ))));
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class SmAuthenticationManager implements ReactiveAuthenticationManager {
@@ -33,7 +32,7 @@ public class SmAuthenticationManager implements ReactiveAuthenticationManager {
                     Claims claims = jwtUtil.getAllClaimsFromToken(authToken);
                     List<String> rolesMap = claims.get("role", List.class);
                     return new SmAuthenticationToken(username, null,
-                            rolesMap.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+                            rolesMap.stream().map(SimpleGrantedAuthority::new).toList());
                 });
     }
 }
