@@ -1,9 +1,5 @@
 package com.bkk.sm.authentication.services.mongo.impl;
 
-import com.bkk.sm.authentication.model.CompanyRole;
-import com.bkk.sm.authentication.model.Role;
-import com.bkk.sm.authentication.model.User;
-import com.bkk.sm.authentication.model.UserResource;
 import com.bkk.sm.authentication.repository.ReactiveUserRepository;
 import com.bkk.sm.authentication.services.mongo.UserDetailsService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
