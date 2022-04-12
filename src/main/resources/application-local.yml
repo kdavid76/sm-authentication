@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      database: users
+      uri: mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
