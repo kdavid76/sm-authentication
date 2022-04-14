@@ -1,7 +1,7 @@
 package com.bkk.sm.authentication.services.mongo.impl;
 
-import com.bkk.sm.authentication.repository.ReactiveUserRepository;
 import com.bkk.sm.authentication.services.mongo.UserDetailsService;
+import com.bkk.sm.mongo.authentication.repository.ReactiveUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;

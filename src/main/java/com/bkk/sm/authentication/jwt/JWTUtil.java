@@ -1,6 +1,6 @@
 package com.bkk.sm.authentication.jwt;
 
-import com.bkk.sm.authentication.model.User;
+import com.bkk.sm.mongo.authentication.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
