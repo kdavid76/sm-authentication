@@ -14,6 +14,10 @@
 	<name>sm-authentication</name>
 	<description>Sport Management Server side authentication and gateway service</description>
 
+	<properties>
+		<sm-common.version>0.0.1-SNAPSHOT</sm-common.version>
+	</properties>
+
 	<dependencies>
 		<!-- Spring Boot starters -->
 		<dependency>
@@ -69,20 +73,47 @@
 			<artifactId>jasypt-spring-boot-starter</artifactId>
 		</dependency>
 
+		<!-- SM Dependencies -->
+		<dependency>
+			<groupId>com.sportmanagement.bkk</groupId>
+			<artifactId>sm-mongo</artifactId>
+			<version>${sm-common.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sportmanagement.bkk</groupId>
+			<artifactId>sm-resources</artifactId>
+			<version>${sm-common.version}</version>
+		</dependency>
+
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>de.flapdoodle.embed</groupId>
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -92,6 +123,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.6.3</version>
 			</plugin>
 		</plugins>
 	</build>
