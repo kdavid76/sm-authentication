@@ -17,4 +17,10 @@ public class RouterConfig {
         return RouterFunctions
                 .route(POST("/login"), loginHandler::login);
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> somethingRoutes(LoginHandler loginHandler) {
+        return RouterFunctions
+                .route(POST("/something"), loginHandler::login);
+    }
 }

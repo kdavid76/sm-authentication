@@ -4,10 +4,11 @@ import com.bkk.sm.authentication.handler.LoginHandler;
 import com.bkk.sm.authentication.jwt.JWTUtil;
 import com.bkk.sm.authentication.model.AuthRequest;
 import com.bkk.sm.authentication.model.AuthResponse;
-import com.bkk.sm.authentication.services.mongo.UserDetailsService;
 import com.bkk.sm.mongo.authentication.model.User;
+import com.bkk.sm.mongo.authentication.service.ReactiveUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,11 +24,12 @@ import java.util.Date;
 @Component
 public class LoginHandlerImp implements LoginHandler {
 
-    private final UserDetailsService userDetailsService;
+    private final ReactiveUserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
 
-    public LoginHandlerImp(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
+    @Autowired
+    public LoginHandlerImp(ReactiveUserService userDetailsService, PasswordEncoder passwordEncoder,
                            JWTUtil jwtUtil) {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
