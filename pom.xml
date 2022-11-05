@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.sportmanagement.bkk</groupId>
-		<artifactId>sm-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>com.sportmanagement.bkk</groupId>
+        <artifactId>sm-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-	<artifactId>sm-authentication</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>sm-authentication</name>
-	<description>Sport Management Server side authentication and gateway service</description>
+    <artifactId>sm-authentication-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>sm-authentication</name>
+    <description>Sport Management Server side authentication and gateway service</description>
 
-	<properties>
-	</properties>
+    <modules>
+        <module>service</module>
+        <module>data-access</module>
+        <module>jwt</module>
+    </modules>
 
-	<dependencyManagement>
-		<dependencies>
-		</dependencies>
+    <properties>
+        <bkk.module.customer.version>0.0.1-SNAPSHOT</bkk.module.customer.version>
+    </properties>
 
-	</dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <!-- PROJECT -->
+            <dependency>
+                <groupId>com.sportmanagement.bkk</groupId>
+                <artifactId>customer-data-access</artifactId>
+                <version>${bkk.module.customer.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
 </project>
