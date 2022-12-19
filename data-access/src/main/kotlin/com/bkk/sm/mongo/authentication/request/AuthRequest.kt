@@ -1,4 +1,4 @@
-package com.bkk.sm.mongo.authentication.dto
+package com.bkk.sm.mongo.authentication.request
 
 data class AuthRequest(
         val username: String,

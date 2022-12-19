@@ -26,16 +26,15 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>common-models</artifactId>
+        </dependency>
+
         <!-- SM -->
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
             <artifactId>customer-data-access</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sportmanagement.bkk</groupId>
-                    <artifactId>customer-data-access</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- SPRING -->
@@ -63,6 +62,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <classifier>osx-aarch_64</classifier>
         </dependency>
 
         <dependency>
@@ -177,6 +188,12 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
         </plugins>
     </build>
 

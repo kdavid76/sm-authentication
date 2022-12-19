@@ -1,4 +1,4 @@
-package com.bkk.sm.jwt.util
+package com.bkk.sm.jwt
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys

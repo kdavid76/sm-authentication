@@ -23,6 +23,8 @@
 
     <properties>
         <bkk.module.customer.version>0.0.1-SNAPSHOT</bkk.module.customer.version>
+        <bkk.module.commons.version>0.0.1-SNAPSHOT</bkk.module.commons.version>
+        <netty.resolver.version>4.1.82.Final</netty.resolver.version>
     </properties>
 
     <dependencyManagement>
@@ -34,7 +36,47 @@
                 <version>${bkk.module.customer.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.sportmanagement.bkk</groupId>
+                <artifactId>common-models</artifactId>
+                <version>${bkk.module.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver-dns-native-macos</artifactId>
+                <version>${netty.resolver.version}</version>
+                <classifier>osx-aarch_64</classifier>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                                <goal>test-jar</goal>
+                            </goals>
+                            <configuration>
+                                <attach>true</attach>
+                                <forceCreation>true</forceCreation>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
