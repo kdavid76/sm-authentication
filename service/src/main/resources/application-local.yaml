@@ -1,0 +1,9 @@
+com:
+  bkk:
+    sm:
+      customer-service:
+        baseUri: http://localhost:1901
+        usersPath: users
+        companiesPath: companies
+        useTimeouts: false
+

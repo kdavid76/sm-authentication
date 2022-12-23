@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: authentication-service
+server:
+  port: 1902
+com:
+  bkk:
+    sm:
+      mongo:
+        customers:
+          database: customers
+          uri: mongodb+srv://${MONGO_CUSTOMER_USER}:${MONGO_CUSTOMER_PASSWORD}@taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
+      jwt:
+        secret: ${JWT_SECRET_SALT}
+        expiration: 18000
+        issuer: IcecodeBt
+      customer-service:
+        baseUri: https://customer-service.default.svc.cluster.local:1901
+        usersPath: users
+        companiesPath: companies
+        apiVersion: V1
+
