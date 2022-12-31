@@ -39,11 +39,10 @@ class AuthenticationHandler(
 
     suspend fun registerCompany(request: ServerRequest): ServerResponse {
         val regCompany = request.awaitBodyOrNull<RegCompanyRequest>()
-        regCompany?.let {
-            it.user?.let {
-            }
-        }
 
-        return ServerResponse.ok().buildAndAwait()
+        regCompany?.let {
+            return authService.registerCompany(it.company, it.user)
+        }
+        return ServerResponse.badRequest().buildAndAwait()
     }
 }

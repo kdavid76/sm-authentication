@@ -1,8 +1,12 @@
 package com.bkk.sm.authentication.service
 
 import com.bkk.sm.authentication.config.CustomersConfig
+import com.bkk.sm.common.customer.resources.CompanyAndUserResource
+import com.bkk.sm.common.customer.resources.CompanyResource
 import com.bkk.sm.common.customer.resources.UserResource
+import com.bkk.sm.common.customer.validators.CompanyResourceValidator
 import com.bkk.sm.common.customer.validators.UserResourceValidator
+import com.bkk.sm.common.errors.responses.FormErrorResource
 import com.bkk.sm.jwt.JwtUtil
 import com.bkk.sm.mongo.authentication.response.AuthResponse
 import com.bkk.sm.mongo.authentication.model.SmUser
@@ -33,6 +37,7 @@ class AuthenticationService (
     private val jwtUtil: JwtUtil,
     private val passwordEncoder: PasswordEncoder,
     private val userResourceValidator: UserResourceValidator,
+    private val companyResourceValidator: CompanyResourceValidator,
     @Qualifier("customerWebclient") private val client: WebClient,
     private val customersConfig: CustomersConfig
 ){
@@ -54,7 +59,10 @@ class AuthenticationService (
 
         if (errors.hasErrors()) {
             log.error { "Cannot register user, there are errors ${errors.allErrors.joinToString { "${it.code}" }}" }
-            return ServerResponse.badRequest().buildAndAwait()
+            return ServerResponse.badRequest().bodyValueAndAwait(FormErrorResource.Builder()
+                .objectName(UserResource::class.java.name)
+                .addFieldErrors(errors)
+                .build())
         }
 
         val resource = client.post()
@@ -76,6 +84,38 @@ class AuthenticationService (
         }
     }
 
+    suspend fun registerCompany(company: CompanyResource, user: UserResource?): ServerResponse {
+        val companyErrors = validateCompany(company)
+        val userErrors = user?.let {
+            validateUser(user)
+        } ?:  BeanPropertyBindingResult(user, UserResource::class.java.name)
+
+        if (companyErrors.hasErrors() || userErrors.hasErrors()) {
+            return ServerResponse.badRequest().bodyValueAndAwait(FormErrorResource.Builder()
+                .objectName(CompanyAndUserResource::class.java.name)
+                .addFieldErrors(companyErrors)
+                .addFieldErrors(userErrors)
+                .build())
+        }
+
+        val resource = client.post()
+            .uri(customersConfig.companiesPath)
+            .accept(MediaType.APPLICATION_JSON)
+            .body(BodyInserters.fromValue(CompanyAndUserResource(companyResource = company, userResource = user)))
+            .retrieve()
+            .onStatus(HttpStatus::is4xxClientError) { Mono.error { ResponseStatusException(it.statusCode())}}
+            .onStatus(HttpStatus::is5xxServerError) { Mono.error { ResponseStatusException(it.statusCode())}}
+            .bodyToMono(CompanyAndUserResource::class.java)
+            .awaitSingleOrNull()
+
+        resource?.let {
+            log.info { "Company=${it.companyResource} with admin=${it.userResource ?: "N/A"} successfully registered" }
+            return ServerResponse.ok().body(BodyInserters.fromValue(it)).awaitSingle()
+        }.run {
+            log.error { "Something went wrong during registering company=${company} with admin=${user ?: "N/A"}" }
+            return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+        }
+    }
 
     private suspend fun doLogin(password: String, smUser: SmUser): ServerResponse {
 
@@ -103,7 +143,13 @@ class AuthenticationService (
 
     private suspend fun validateUser(userResource: UserResource): Errors {
         val errors: Errors = BeanPropertyBindingResult(userResource, UserResource::class.java.name)
-        userResourceValidator.validate(userResource,errors)
+        userResourceValidator.validate(userResource, errors)
+        return errors
+    }
+
+    private suspend fun validateCompany(companyResource: CompanyResource): Errors {
+        val errors: Errors = BeanPropertyBindingResult(companyResource, CompanyResource::class.java.name)
+        companyResourceValidator.validate(companyResource,errors)
         return errors
     }
 }
