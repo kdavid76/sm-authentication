@@ -22,7 +22,6 @@ class RouterConfig {
             headers {
                 it.header("API_VERSION")[0].equals("V1")
             }.nest {
-
                 contentType(MediaType.APPLICATION_JSON).nest {
                     POST("", authHandler::login)
                 }
@@ -33,7 +32,6 @@ class RouterConfig {
             headers {
                 it.header("API_VERSION")[0].equals("V1")
             }.nest {
-
                 contentType(MediaType.APPLICATION_JSON).nest {
                     POST("/user", authHandler::registerUser)
                     POST("/company", authHandler::registerCompany)

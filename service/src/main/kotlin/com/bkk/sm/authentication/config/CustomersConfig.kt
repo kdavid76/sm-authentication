@@ -1,10 +1,8 @@
 package com.bkk.sm.authentication.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 
 @ConfigurationProperties(prefix = "com.bkk.sm.customer-service")
-@ConstructorBinding
 data class CustomersConfig(
     val baseUri: String,
     val usersPath: String,
@@ -14,5 +12,4 @@ data class CustomersConfig(
     var readTimeOut: Int = 100,
     var writeTimeOut: Int = 100,
     var useTimeouts: Boolean = true
-
 )

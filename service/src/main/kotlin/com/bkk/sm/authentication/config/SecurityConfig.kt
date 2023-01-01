@@ -16,15 +16,15 @@ class SecurityConfig {
     @Bean
     fun configureSecurity(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
-                .csrf().disable()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .authorizeExchange()
-                .pathMatchers("/login/**")
-                .permitAll()
-                .pathMatchers("/register/**")
-                .permitAll()
-                .and()
-                .build()
+            .csrf().disable()
+            .formLogin().disable()
+            .httpBasic().disable()
+            .authorizeExchange()
+            .pathMatchers("/login/**")
+            .permitAll()
+            .pathMatchers("/register/**")
+            .permitAll()
+            .and()
+            .build()
     }
 }

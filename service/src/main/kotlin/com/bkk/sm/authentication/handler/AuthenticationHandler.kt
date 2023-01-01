@@ -7,7 +7,10 @@ import com.bkk.sm.mongo.authentication.request.RegUserRequest
 import mu.KotlinLogging
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.server.*
+import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.awaitBodyOrNull
+import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
 class AuthenticationHandler(
@@ -18,8 +21,8 @@ class AuthenticationHandler(
     suspend fun login(request: ServerRequest): ServerResponse {
         val authRequest = request.awaitBodyOrNull<AuthRequest>()
 
-        return if(StringUtils.isAnyBlank(authRequest?.password, authRequest?.username) ) {
-            log.error { "Invalid request=${authRequest} for authentication" }
+        return if (StringUtils.isAnyBlank(authRequest?.password, authRequest?.username)) {
+            log.error { "Invalid request=$authRequest for authentication" }
             ServerResponse.badRequest().buildAndAwait()
         } else {
             authService.login(authRequest!!.username, authRequest.password)

@@ -8,8 +8,8 @@ import com.bkk.sm.common.customer.validators.CompanyResourceValidator
 import com.bkk.sm.common.customer.validators.UserResourceValidator
 import com.bkk.sm.common.errors.responses.FormErrorResource
 import com.bkk.sm.jwt.JwtUtil
-import com.bkk.sm.mongo.authentication.response.AuthResponse
 import com.bkk.sm.mongo.authentication.model.SmUser
+import com.bkk.sm.mongo.authentication.response.AuthResponse
 import com.bkk.sm.mongo.authentication.userdetails.UserDetailsService
 import com.bkk.sm.mongo.customers.model.user.UserProfile
 import kotlinx.coroutines.reactor.awaitSingle
@@ -32,7 +32,7 @@ import reactor.core.publisher.Mono
 import java.time.Instant
 
 @Component
-class AuthenticationService (
+class AuthenticationService(
     private val userDetailsService: UserDetailsService,
     private val jwtUtil: JwtUtil,
     private val passwordEncoder: PasswordEncoder,
@@ -40,29 +40,30 @@ class AuthenticationService (
     private val companyResourceValidator: CompanyResourceValidator,
     @Qualifier("customerWebclient") private val client: WebClient,
     private val customersConfig: CustomersConfig
-){
+) {
     val log = KotlinLogging.logger {}
 
-    suspend fun login(username: String, password: String) : ServerResponse {
+    suspend fun login(username: String, password: String): ServerResponse {
         val user = userDetailsService.findByUsername(username).awaitSingleOrNull()
 
         user?.let {
             return doLogin(password, it as SmUser)
         }
 
-        log.warn { "User with username=${username} can't be found" }
+        log.warn { "User with username=$username can't be found" }
         return ServerResponse.notFound().buildAndAwait()
     }
 
     suspend fun registerUser(userProfile: UserResource): ServerResponse {
         val errors = validateUser(userProfile)
-
         if (errors.hasErrors()) {
-            log.error { "Cannot register user, there are errors ${errors.allErrors.joinToString { "${it.code}" }}" }
-            return ServerResponse.badRequest().bodyValueAndAwait(FormErrorResource.Builder()
-                .objectName(UserResource::class.java.name)
-                .addFieldErrors(errors)
-                .build())
+            log.error { "Cannot register user, there are errors ${errors.allErrors.joinToString { it.code as CharSequence }}" }
+            return ServerResponse.badRequest().bodyValueAndAwait(
+                FormErrorResource.Builder()
+                    .objectName(UserResource::class.java.name)
+                    .addFieldErrors(errors)
+                    .build()
+            )
         }
 
         val resource = client.post()
@@ -70,16 +71,16 @@ class AuthenticationService (
             .accept(MediaType.APPLICATION_JSON)
             .body(BodyInserters.fromValue(userProfile))
             .retrieve()
-            .onStatus(HttpStatus::is4xxClientError) { Mono.error { ResponseStatusException(it.statusCode())}}
-            .onStatus(HttpStatus::is5xxServerError) { Mono.error { ResponseStatusException(it.statusCode())}}
+            .onStatus({ status -> status.is4xxClientError }) { Mono.error { ResponseStatusException(it.statusCode()) } }
+            .onStatus({ status -> status.is5xxServerError }) { Mono.error { ResponseStatusException(it.statusCode()) } }
             .bodyToMono(UserResource::class.java)
             .awaitSingleOrNull()
 
         resource?.let {
-            log.info { "User=${it} successfully registered" }
+            log.info { "User=$it successfully registered" }
             return ServerResponse.ok().body(BodyInserters.fromValue(it)).awaitSingle()
         }.run {
-            log.error { "Something went wrong during registering user=${userProfile}" }
+            log.error { "Something went wrong during registering user=$userProfile" }
             return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
         }
     }
@@ -88,14 +89,16 @@ class AuthenticationService (
         val companyErrors = validateCompany(company)
         val userErrors = user?.let {
             validateUser(user)
-        } ?:  BeanPropertyBindingResult(user, UserResource::class.java.name)
+        } ?: BeanPropertyBindingResult(user, UserResource::class.java.name)
 
         if (companyErrors.hasErrors() || userErrors.hasErrors()) {
-            return ServerResponse.badRequest().bodyValueAndAwait(FormErrorResource.Builder()
-                .objectName(CompanyAndUserResource::class.java.name)
-                .addFieldErrors(companyErrors)
-                .addFieldErrors(userErrors)
-                .build())
+            return ServerResponse.badRequest().bodyValueAndAwait(
+                FormErrorResource.Builder()
+                    .objectName(CompanyAndUserResource::class.java.name)
+                    .addFieldErrors(companyErrors)
+                    .addFieldErrors(userErrors)
+                    .build()
+            )
         }
 
         val resource = client.post()
@@ -103,8 +106,8 @@ class AuthenticationService (
             .accept(MediaType.APPLICATION_JSON)
             .body(BodyInserters.fromValue(CompanyAndUserResource(companyResource = company, userResource = user)))
             .retrieve()
-            .onStatus(HttpStatus::is4xxClientError) { Mono.error { ResponseStatusException(it.statusCode())}}
-            .onStatus(HttpStatus::is5xxServerError) { Mono.error { ResponseStatusException(it.statusCode())}}
+            .onStatus({ status -> status.is4xxClientError }) { Mono.error { ResponseStatusException(it.statusCode()) } }
+            .onStatus({ status -> status.is5xxServerError }) { Mono.error { ResponseStatusException(it.statusCode()) } }
             .bodyToMono(CompanyAndUserResource::class.java)
             .awaitSingleOrNull()
 
@@ -112,17 +115,16 @@ class AuthenticationService (
             log.info { "Company=${it.companyResource} with admin=${it.userResource ?: "N/A"} successfully registered" }
             return ServerResponse.ok().body(BodyInserters.fromValue(it)).awaitSingle()
         }.run {
-            log.error { "Something went wrong during registering company=${company} with admin=${user ?: "N/A"}" }
+            log.error { "Something went wrong during registering company=$company with admin=${user ?: "N/A"}" }
             return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
         }
     }
 
     private suspend fun doLogin(password: String, smUser: SmUser): ServerResponse {
-
         if (!smUser.isValid() || !passwordEncoder.matches(password, smUser.user.password)) {
             log.error {
                 "Access forbidden for user=${smUser.username}. isAccountNonExpired=${smUser.isAccountNonExpired}, " +
-                        "isAccountNonLocked=${smUser.isAccountNonLocked}, isCredentialsNonExpired=${smUser.isCredentialsNonExpired}"
+                    "isAccountNonLocked=${smUser.isAccountNonLocked}, isCredentialsNonExpired=${smUser.isCredentialsNonExpired}"
             }
             return ServerResponse.status(HttpStatus.FORBIDDEN).build().awaitSingle()
         }
@@ -149,7 +151,7 @@ class AuthenticationService (
 
     private suspend fun validateCompany(companyResource: CompanyResource): Errors {
         val errors: Errors = BeanPropertyBindingResult(companyResource, CompanyResource::class.java.name)
-        companyResourceValidator.validate(companyResource,errors)
+        companyResourceValidator.validate(companyResource, errors)
         return errors
     }
 }

@@ -26,19 +26,19 @@ class JwtUtil {
 
     @PostConstruct
     fun init() {
-        key = Keys.hmacShaKeyFor(secret.toByteArray());
+        key = Keys.hmacShaKeyFor(secret.toByteArray())
     }
 
     fun generateToken(claims: Map<String, Any?>, username: String): String? {
         val createdDate: Date = Date.from(Instant.now())
         val expirationDate = Date(createdDate.time + expirationTimeIsSeconds * 1000)
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(username)
-                .setIssuedAt(createdDate)
-                .setExpiration(expirationDate)
-                .setIssuer(issuer)
-                .signWith(key)
-                .compact()
+            .setClaims(claims)
+            .setSubject(username)
+            .setIssuedAt(createdDate)
+            .setExpiration(expirationDate)
+            .setIssuer(issuer)
+            .signWith(key)
+            .compact()
     }
 }
