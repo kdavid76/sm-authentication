@@ -16,9 +16,9 @@
     <description>Sport Management Server side authentication and gateway service</description>
 
     <modules>
-        <module>service</module>
-        <module>data-access</module>
-        <module>jwt</module>
+        <module>sm-auth-services</module>
+        <module>sm-auth-data-access</module>
+        <module>sm-auth-jwt</module>
     </modules>
 
     <properties>
@@ -32,13 +32,13 @@
             <!-- PROJECT -->
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
-                <artifactId>customer-data-access</artifactId>
+                <artifactId>sm-customer-data-access</artifactId>
                 <version>${bkk.module.customer.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
-                <artifactId>common-models</artifactId>
+                <artifactId>sm-common-models</artifactId>
                 <version>${bkk.module.commons.version}</version>
             </dependency>
 

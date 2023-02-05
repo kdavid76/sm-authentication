@@ -9,32 +9,32 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>service</artifactId>
+    <artifactId>sm-auth-services</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- PROJECT -->
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>authentication-data-access</artifactId>
+            <artifactId>sm-auth-data-access</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>jwt</artifactId>
+            <artifactId>sm-auth-jwt</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>common-models</artifactId>
         </dependency>
 
         <!-- SM -->
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>customer-data-access</artifactId>
+            <artifactId>sm-common-models</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>sm-customer-data-access</artifactId>
         </dependency>
 
         <!-- SPRING -->

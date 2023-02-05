@@ -9,19 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>authentication-data-access</artifactId>
+    <artifactId>sm-auth-data-access</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- SM -->
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>customer-data-access</artifactId>
+            <artifactId>sm-customer-data-access</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>common-models</artifactId>
+            <artifactId>sm-common-models</artifactId>
         </dependency>
 
         <!-- SPRING -->
