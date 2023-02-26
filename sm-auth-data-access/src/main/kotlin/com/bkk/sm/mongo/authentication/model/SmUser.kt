@@ -11,7 +11,7 @@ class SmUser(userBase: UserProfile) :
         userBase.isAccountNonExpired(),
         userBase.isPasswordNonExpired(),
         !userBase.accountLocked,
-        userBase.getGrantedAuthorities()
+        userBase.getGrantedAuthorities(),
     ) {
 
     val user: UserProfile = userBase

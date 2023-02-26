@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
 class AuthenticationHandler(
-    val authService: AuthenticationService
+    val authService: AuthenticationService,
 ) {
     val log = KotlinLogging.logger {}
 

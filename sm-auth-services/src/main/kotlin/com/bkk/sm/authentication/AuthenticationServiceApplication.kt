@@ -8,8 +8,8 @@ import org.springframework.boot.runApplication
 @SpringBootApplication(
     scanBasePackages = [
         "com.bkk.sm.mongo", "com.bkk.sm.mongo", "com.bkk.sm.authentication",
-        "com.bkk.sm.jwt", "com.bkk.sm.common"
-    ]
+        "com.bkk.sm.jwt", "com.bkk.sm.common",
+    ],
 )
 @EnableConfigurationProperties(CustomersConfig::class)
 class AuthenticationServiceApplication

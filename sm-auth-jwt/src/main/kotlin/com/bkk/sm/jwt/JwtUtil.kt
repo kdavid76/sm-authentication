@@ -9,7 +9,6 @@ import java.time.Instant
 import java.util.*
 import javax.annotation.PostConstruct
 
-
 @Component
 class JwtUtil {
 

@@ -5,5 +5,5 @@ import com.bkk.sm.common.customer.resources.UserResource
 
 data class RegCompanyRequest(
     val company: CompanyResource,
-    val user: UserResource?
+    val user: UserResource?,
 )

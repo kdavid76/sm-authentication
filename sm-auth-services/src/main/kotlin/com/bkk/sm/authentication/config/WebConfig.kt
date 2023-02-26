@@ -12,7 +12,7 @@ import reactor.netty.http.client.HttpClient
 
 @Configuration
 class WebConfig(
-    val customersConfig: CustomersConfig
+    val customersConfig: CustomersConfig,
 ) {
 
     @Qualifier("customerWebclient")

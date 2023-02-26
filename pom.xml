@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.sportmanagement.bkk</groupId>
         <artifactId>sm-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,9 +22,10 @@
     </modules>
 
     <properties>
-        <bkk.module.customer.version>0.0.1-SNAPSHOT</bkk.module.customer.version>
-        <bkk.module.commons.version>0.0.1-SNAPSHOT</bkk.module.commons.version>
+        <bkk.module.customer.version>0.0.1</bkk.module.customer.version>
+        <bkk.module.commons.version>0.0.2</bkk.module.commons.version>
         <netty.resolver.version>4.1.82.Final</netty.resolver.version>
+        <development.connection.url>scm:git:git@github.com:kdavid76/sm-authentication.git</development.connection.url>
     </properties>
 
     <dependencyManagement>
@@ -78,5 +79,37 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <scm>
+        <developerConnection>${development.connection.url}</developerConnection>
+        <url>https://github.com/kdavid76/sm-authentication</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <profiles>
+        <profile>
+            <id>scm-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <tagNameFormat>v@{project.version}</tagNameFormat>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <configuration>
+                            <generateBackupPoms>true</generateBackupPoms>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
