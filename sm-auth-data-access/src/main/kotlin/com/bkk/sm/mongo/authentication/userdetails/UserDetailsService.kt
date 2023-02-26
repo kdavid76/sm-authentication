@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class UserDetailsService(
-    private val repository: UserRepository
+    private val repository: UserRepository,
 ) : ReactiveUserDetailsService {
     override fun findByUsername(username: String?): Mono<UserDetails> = mono {
         val user = repository.findByUsername(username!!)

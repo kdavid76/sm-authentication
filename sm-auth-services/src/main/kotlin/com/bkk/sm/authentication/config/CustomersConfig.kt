@@ -11,5 +11,5 @@ data class CustomersConfig(
     var connectionTimeout: Int = 10000,
     var readTimeOut: Int = 100,
     var writeTimeOut: Int = 100,
-    var useTimeouts: Boolean = true
+    var useTimeouts: Boolean = true,
 )

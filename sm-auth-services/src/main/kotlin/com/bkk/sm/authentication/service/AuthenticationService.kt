@@ -39,7 +39,7 @@ class AuthenticationService(
     private val userResourceValidator: UserResourceValidator,
     private val companyResourceValidator: CompanyResourceValidator,
     @Qualifier("customerWebclient") private val client: WebClient,
-    private val customersConfig: CustomersConfig
+    private val customersConfig: CustomersConfig,
 ) {
     val log = KotlinLogging.logger {}
 
@@ -62,7 +62,7 @@ class AuthenticationService(
                 FormErrorResource.Builder()
                     .objectName(UserResource::class.java.name)
                     .addFieldErrors(errors)
-                    .build()
+                    .build(),
             )
         }
 
@@ -97,7 +97,7 @@ class AuthenticationService(
                     .objectName(CompanyAndUserResource::class.java.name)
                     .addFieldErrors(companyErrors)
                     .addFieldErrors(userErrors)
-                    .build()
+                    .build(),
             )
         }
 
@@ -140,7 +140,7 @@ class AuthenticationService(
 
     private fun calculateClaimsMap(userProfile: UserProfile): MutableMap<String, Any?> =
         mutableMapOf(
-            Pair("roles", userProfile.roles)
+            Pair("roles", userProfile.roles),
         )
 
     private suspend fun validateUser(userResource: UserResource): Errors {
