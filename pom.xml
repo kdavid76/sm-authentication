@@ -23,10 +23,17 @@
 
     <properties>
         <bkk.module.customer.version>0.0.1</bkk.module.customer.version>
-        <bkk.module.commons.version>0.0.2</bkk.module.commons.version>
+        <bkk.module.commons.version>0.0.1</bkk.module.commons.version>
         <netty.resolver.version>4.1.82.Final</netty.resolver.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-authentication.git</development.connection.url>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
