@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>sm-authentication-parent</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>sm-authentication</name>
     <description>Sport Management Server side authentication and gateway service</description>
 
