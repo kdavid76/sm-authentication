@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.sportmanagement.bkk</groupId>
         <artifactId>sm-parent</artifactId>
-        <version>0.0.4</version>
+        <version>0.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,8 +22,8 @@
     </modules>
 
     <properties>
-        <bkk.module.customer.version>0.0.3</bkk.module.customer.version>
-        <bkk.module.commons.version>0.0.2</bkk.module.commons.version>
+        <bkk.module.customer.version>0.1.0</bkk.module.customer.version>
+        <bkk.module.commons.version>0.1.0</bkk.module.commons.version>
         <netty.resolver.version>4.1.82.Final</netty.resolver.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-authentication.git</development.connection.url>
         <image.path>davidkrisztian76/sm-authentication</image.path>
