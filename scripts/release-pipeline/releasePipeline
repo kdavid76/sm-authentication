@@ -49,7 +49,7 @@ pipeline {
                     steps {
                         sh('git add .')
                         sh("git commit -m 'SM-AUTH: Release ${NEXT_RELEASE}'")
-                        sh("git tag -a 'v@${NEXT_RELEASE}' -m 'Release ${NEXT_RELEASE}' HEAD")
+                        sh("git tag -a 'v@${NEXT_RELEASE}' -m '[skip ci] Release ${NEXT_RELEASE}' HEAD")
                         sh('git push --follow-tags')
                     }
                 }
@@ -85,7 +85,7 @@ pipeline {
                 stage('Push snapshot to GitHub') {
                     steps {
                         sh('git add .')
-                        sh("git commit -m 'SM-AUTH: Next snapshot ${NEXT_SNAPSHOT}'")
+                        sh("git commit -m '[skip ci] SM-AUTH: Next snapshot ${NEXT_SNAPSHOT}'")
                         sh('git push')
                     }
                 }
