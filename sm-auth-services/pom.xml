@@ -34,6 +34,11 @@
 
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>sm-common-kafka</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
             <artifactId>sm-customer-data-access</artifactId>
         </dependency>
 
@@ -121,6 +126,39 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+
+        <!-- KAFKA -->
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-streams-avro-serde</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.avro-kotlin.avro4k</groupId>
+            <artifactId>avro4k-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-serialization</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-json</artifactId>
+            <type>pom</type>
+        </dependency>
+
 
         <!-- TEST -->
         <dependency>
