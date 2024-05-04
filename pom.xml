@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.sportmanagement.bkk</groupId>
         <artifactId>sm-parent</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.7-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,9 +23,11 @@
 
     <properties>
         <bkk.module.customer.version>0.1.0</bkk.module.customer.version>
-        <bkk.module.commons.version>0.1.0</bkk.module.commons.version>
+        <bkk.module.commons.version>0.1.2-SNAPSHOT</bkk.module.commons.version>
         <netty.resolver.version>4.1.82.Final</netty.resolver.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-authentication.git</development.connection.url>
+
+        <docker.registry.url>hub.docker.com</docker.registry.url>
         <image.path>davidkrisztian76/sm-authentication</image.path>
     </properties>
 
@@ -52,6 +54,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.sportmanagement.bkk</groupId>
+                <artifactId>sm-common-kafka</artifactId>
+                <version>${bkk.module.commons.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-resolver-dns-native-macos</artifactId>
                 <version>${netty.resolver.version}</version>
@@ -74,7 +82,7 @@
                             <id>attach-sources</id>
                             <phase>package</phase>
                             <goals>
-                                <goal>jar</goal>
+                                <goal>jar-no-fork</goal>
                                 <goal>test-jar</goal>
                             </goals>
                             <configuration>
@@ -84,6 +92,38 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>tag-latest</id>
+                            <goals>
+                                <goal>tag</goal>
+                                <goal>push</goal>
+                            </goals>
+                            <configuration>
+                                <tag>latest</tag>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>tag-version</id>
+                            <goals>
+                                <goal>tag</goal>
+                            </goals>
+                            <configuration>
+                                <tag>${project.version}</tag>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <repository>${docker.registry.url}/repository/docker/${image.path}</repository>
+                        <tag>latest</tag>
+                        <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                        <skip>false</skip>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
