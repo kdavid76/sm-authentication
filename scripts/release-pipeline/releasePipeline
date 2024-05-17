@@ -60,12 +60,14 @@ pipeline {
                 }
             }
         }
-        stage('Push to dockerhub') {
+        stage('Build and push to DockerHub') {
             steps {
-                dir('sm-auth-services') {
-                    withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
-                        sh ('mvn jib:build')
-                    }
+                withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh '''
+                        pwd
+                        cd sm-customer-services
+                        mvn jib:build -DUSERNAME_DOCKER=$USERNAME -DPASSWORD_DOCKER=$PASSWORD
+                    '''
                 }
             }
         }

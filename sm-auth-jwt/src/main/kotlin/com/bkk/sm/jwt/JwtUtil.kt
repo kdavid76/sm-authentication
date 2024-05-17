@@ -16,7 +16,7 @@ class JwtUtil {
     val secret: String = ""
 
     @Value("\${com.bkk.sm.jwt.expiration}")
-    val expirationTimeIsSeconds: Long = 10 * 60 // 10 minutes
+    val expirationTimeInSeconds: Long = 10 * 60 // 10 minutes
 
     @Value("\${com.bkk.sm.jwt.issuer}")
     val issuer: String = ""
@@ -30,7 +30,7 @@ class JwtUtil {
 
     fun generateToken(claims: Map<String, Any?>, username: String): String? {
         val createdDate: Date = Date.from(Instant.now())
-        val expirationDate = Date(createdDate.time + expirationTimeIsSeconds * 1000)
+        val expirationDate = Date(createdDate.time + expirationTimeInSeconds * 1000)
         return Jwts.builder()
             .setClaims(claims)
             .setSubject(username)

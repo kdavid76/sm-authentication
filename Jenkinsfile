@@ -46,28 +46,23 @@ pipeline  {
             }
         }
 
-        stage('Static style check') {
-            steps {
-                sh '''
-                    mvn ktlint:check
-                '''
-            }
-        }
+        stage('Checks') {
+            parallel {
+                stage('Static style check') {
+                    steps {
+                        sh '''
+                            mvn ktlint:check
+                        '''
+                    }
+                }
 
-        stage('Test') {
-            steps {
-                sh '''
-                    mvn test
-                '''
-            }
-        }
-
-        stage('Deploy snapshot to artifactory') {
-            when {
-                branch "develop"
-            }
-            steps {
-                sh('mvn deploy')
+                stage('Test') {
+                    steps {
+                        sh '''
+                            mvn test
+                        '''
+                    }
+                }
             }
         }
     }

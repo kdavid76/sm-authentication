@@ -34,6 +34,11 @@
 
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>sm-common-kafka</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
             <artifactId>sm-customer-data-access</artifactId>
         </dependency>
 
@@ -122,6 +127,42 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <!-- KAFKA -->
+        <!--
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>${kafka-avro-serializer.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-streams-avro-serde</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.avro-kotlin.avro4k</groupId>
+            <artifactId>avro4k-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-serialization</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-json</artifactId>
+            <type>pom</type>
+        </dependency>
+        -->
+
         <!-- TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -201,24 +242,24 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>${maven.jib.version}</version>
                 <configuration>
-                    <to>
-                        <image>docker.io/${image.path}</image>
-                        <tags>latest,${project.version}</tags>
-                        <auth>
-                            <username>${DOCKER_REGISTRY_USER}</username>
-                            <password>${DOCKER_REGISTRY_PWD}</password>
-                        </auth>
-                    </to>
                     <from>
                         <image>${maven.jib.image}</image>
                     </from>
-                    <container>
-                        <mainClass>com.bkk.sm.authentication.AuthenticationServiceApplication</mainClass>
-                    </container>
+                    <to>
+                        <image>${image.path}:latest</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
+                        <auth>
+                            <username>${docker.repo.username}</username>
+                            <password>${docker.repo.password}</password>
+                        </auth>
+                    </to>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
