@@ -242,24 +242,24 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>${maven.jib.version}</version>
                 <configuration>
-                    <to>
-                        <image>docker.io/${image.path}</image>
-                        <tags>latest,${project.version}</tags>
-                        <auth>
-                            <username>${DOCKER_REGISTRY_USER}</username>
-                            <password>${DOCKER_REGISTRY_PWD}</password>
-                        </auth>
-                    </to>
                     <from>
                         <image>${maven.jib.image}</image>
                     </from>
-                    <container>
-                        <mainClass>com.bkk.sm.authentication.AuthenticationServiceApplication</mainClass>
-                    </container>
+                    <to>
+                        <image>${image.path}:latest</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
+                        <auth>
+                            <username>${docker.repo.username}</username>
+                            <password>${docker.repo.password}</password>
+                        </auth>
+                    </to>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
