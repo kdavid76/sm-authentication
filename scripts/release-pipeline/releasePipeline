@@ -43,9 +43,9 @@ pipeline {
                 sh ('mvn clean package')
             }
         }
-        stage('Deploy release') {
+        stage('Push code') {
             parallel {
-                stage('Push to GitHub') {
+                stage('Push code to GitHub') {
                     steps {
                         sh('git add .')
                         sh("git commit -m 'SM-AUTH: Release ${NEXT_RELEASE}'")
@@ -65,7 +65,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         pwd
-                        cd sm-customer-services
+                        cd sm-auth-services
                         mvn jib:build -DUSERNAME_DOCKER=$USERNAME -DPASSWORD_DOCKER=$PASSWORD
                     '''
                 }
